@@ -1,0 +1,85 @@
+
+    function loadCartItems() {
+      const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+      const cartContainer = document.getElementById("cart-items");
+      let total = 0;
+
+      cartContainer.innerHTML = "";
+
+      cartItems.forEach((item, index) => {
+        const itemElement = document.createElement("div");
+        const itemElement1 = document.createElement("h2");
+        const itemElement2 = document.createElement("h3");
+        const itemElement3 = document.createElement("img");
+        const itemElement4 = document.createElement("p")
+
+        itemElement.className =
+          "flex items-center bg-gray-50 rounded-xl p-3 mb-3 hover:bg-gray-100/80 transition-colors duration-200";
+
+        // Hitung subtotal untuk item ini
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+
+        itemElement.innerHTML = `
+        <div class="flex items-center border-b pb-4 mb-4">
+          <img src="${item.image}" alt="${item.name}" class="mr-4 w-[100px] h-[100px] object-cover rounded-lg" />
+          <div class="flex-grow">
+            <h3 class="text-lg font-semibold">${item.name}</h3>
+          </div>
+          <div class="text-right">
+            <p class="text-lg font-semibold">Rp ${item.price.toLocaleString("id-ID")}</p>
+            <p class="text-sm">Quantity: ${item.quantity}</p>
+            <p class="text-lg font-semibold">Rp ${subtotal.toLocaleString("id-ID")}</p>
+          </div>
+        </div>
+        `;
+        cartContainer.appendChild(itemElement);
+      });
+    }
+
+    // Panggil fungsi ketika halaman selesai dimuat
+    document.addEventListener("DOMContentLoaded", loadCartItems);
+
+    <div id="cart-items" class="p-4 space-y-4">
+
+
+    <div class="container mx-auto p-4">
+    <h2 class="text-xl font-bold mb-4">Pembayaran</h2>
+    <div class="flex items-center border-b pb-4 mb-4">
+        <img src="https://placehold.co/100x100" alt="Crocband II.5 Clog" class="mr-4" />
+        <div class="flex-grow">
+            <h3 class="text-lg font-semibold">Crocband™ II.5 Clog</h3>
+            <p class="text-sm text-muted-foreground">Item pempek</p>
+        </div>
+        <div class="text-right">
+            <p class="text-lg font-semibold">$39.99</p>
+            <p class="text-sm">Quantity: 1</p>
+            <p class="text-lg font-semibold">$39.99</p>
+        </div>
+    </div>
+    <div class="mt-4">
+        <h3 class="text-lg font-semibold">Item (1) subtotal</h3>
+        <p class="text-lg font-semibold">$39.99</p>
+    </div>
+    <div class="mt-4">
+    <h3 class="text-lg font-semibold">Pengiriman</h3>
+    <select class="mt-2 w-full border border-gray-300 rounded-md p-2">
+        <option value="gojek">Gojek (5 - 15 menit) - Rp 12.000</option>
+        <option value="grab">Grab (5 - 15 menit) - Rp 11.000</option>
+        <option value="sicepat">Sicepat Instant (5 - 15 menit) - Rp 10.000</option>
+    </select>
+</div>
+
+<h3 class="text-lg font-semibold">Pengiriman</h3>
+        <select class="mt-2 w-full border border-gray-300 rounded-md p-2">
+          <option value="gojek">Gojek (5 - 15 menit) - Rp 12.000</option>
+          <option value="grab">Grab (5 - 15 menit) - Rp 11.000</option>
+          <option value="sicepat">Sicepat Instant (5 - 15 menit) - Rp 10.000</option>
+        </select>
+      </div>
+      <div class="mt-4">
+        <h3 class="text-lg font-semibold">Biaya Admin</h3>
+        <p class="text-sm">Rp 2.000</p>
+      </div>
+      <div class="mt-4 border-t pt-4">
+  

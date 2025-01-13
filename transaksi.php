@@ -241,24 +241,36 @@ $conn->close();
     <?php endforeach; ?>
 
     <?php if (empty($transactions)): ?>
-        <p>Anda Belum Melakukan transaksi apapun</p>
+      <div class="text-center p-6 bg-white rounded-lg shadow-md">
+    <p class="text-lg font-semibold text-gray-800 mb-2">Anda Belum Melakukan Transaksi Apapun</p>
+    <button class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors">
+      Mulai Belanja
+    </button>
+  </div>
     <?php endif; ?>
 </div>
 
 
 
 
-    <div class="mt-6 flex justify-between">
-        <button onclick="backToProduct()" class="bg-blue-500 text-white p-2 rounded-lg">
-            <i class="fas fa-chevron-left"></i> Kembali ke Keranjang
-        </button>
-    </div>
+<div class="mt-6 flex justify-between">
+  <button onclick="backToProduct()" class="bg-blue-500 text-white p-2 rounded-lg">
+    <i class="fas fa-chevron-left"></i> Kembali ke Keranjang
+  </button>
+  <button onclick="printInvoice()" class="bg-green-500 text-white p-2 rounded-lg ml-auto">
+    Cetak Invoice
+  </button>
+</div>
+
 </div>
   </body>
   <script>
 // verificationsession.php
    function backToProduct() {
     window.location.href = "produk.php";
+  }
+  function printInvoice() {
+    window.location.href = "invoice.php";
   }
 
   function completePayment() {

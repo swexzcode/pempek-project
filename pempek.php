@@ -87,6 +87,21 @@
       </div>
     </div>
 
+    <div class="p-6 max-w-lg mx-auto bg-white rounded-lg shadow-md">
+  <h1 class="text-2xl font-bold text-gray-800 mb-4">Cari Produk</h1>
+  <form id="searchForm" class="flex items-center space-x-3">
+    <!-- Input untuk mencari barang -->
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Cari barang..."
+      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <!-- Tombol Submit -->
+  </form>
+   <div id="result" class="flex flex-wrap justify-center mt-4"></div>
+</div>
+
     <!-- Main Content -->
     <main class="container mx-auto px-6 py-12">
       <div
@@ -373,6 +388,76 @@
   // Redirect ke halaman checkout
   window.location.href = "checkout.php";
 }
+
+function performSearch(query) {
+    // Data lokal sebagai contoh
+    const data = [
+        { title: 'The Summer Hikaru Dead', genre: 'Thriller', description: 'A thriller about a summer mystery.', src: 'https://i.pinimg.com/736x/b6/af/9f/b6af9f8dfd010eb70531294e065a6279.jpg'},
+        { title: 'The Horizon', genre: 'Fiction', description: 'A fiction about the horizon.', src: 'https://i.pinimg.com/736x/d9/91/5f/d9915f8ae362d53e274aeba17f95ad15.jpg'},
+        { title: 'Look Back', genre: 'History', description: 'A history book about looking back.', src: 'https://i.pinimg.com/736x/e4/54/a7/e454a7fe4f6be848e35226e703582ba6.jpg'},
+        { title: 'Sonny Boy', genre: 'Education', description: 'An educational book', src: 'https://i.pinimg.com/736x/3d/38/c8/3d38c80fea8047039b59da72f881aacd.jpg'},
+        { title: 'Rolling Stone', genre: 'Romance', description: 'A romance book about rolling stones.', src: 'https://i.pinimg.com/736x/41/be/b9/41beb9f7dd6178c05493ce6b99386502.jpg'},
+    ];  
+
+    // Cek apakah query kosong
+    if (query === '') {
+        resultContainer.innerHTML = null;
+        return;
+    }
+
+    // Pencarian berdasarkan input
+    const filteredData = data.filter(item =>
+        item.title.toLowerCase().includes(query.toLowerCase()) || item.genre.toLowerCase().includes(query.toLowerCase())
+    );
+
+    if (filteredData.length === 0) {
+        resultContainer.innerHTML = '<p>Tidak ada barang yang ditemukan.</p>';
+    } else {
+        let resultHTML = '';
+        filteredData.forEach(item => {
+            resultHTML += `
+            <div class="product-item pempek mx-4">
+                <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                    <div class="relative">
+                        <img src="${item.src}" alt="${item.title}" class="w-full h-100 object-cover object-center"/>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-medium mb-2">${item.title}</h3>
+                        <p id="description3" class="text-gray-700 text-base line-clamp-3">
+                            ${item.description}
+                        </p>
+                        <button onclick="toggleDetail(this, 'description3')" class="text-blue-500 mt-2 hover:underline">
+                            Baca Selengkapnya
+                        </button>
+                        <div class="flex items-center justify-between space-x-2 mb-3">
+                            <button onclick="addToCart(this)" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button onclick="buyNow(this)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">Baca Sekarang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+
+        });
+        resultContainer.innerHTML = resultHTML;
+    }
+}
+
+// Event listener untuk pencarian langsung (real-time)
+searchInput.addEventListener('input', function () {
+    const query = searchInput.value.trim();
+    performSearch(query);
+});
+
+// Event listener untuk tombol submit (fallback)
+searchForm.addEventListener('submit', function (e) {
+    e.preventDefault(); // Mencegah pengiriman form
+    const query = searchInput.value.trim();
+    performSearch(query);
+});
+
     </script>
     <script src="js/cart.js"></script>
     <script src="js/quantity.js"></script>

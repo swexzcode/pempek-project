@@ -160,7 +160,7 @@ if ($isLoggedIn) {
             Palembang.
           </p>
           <a
-            href="php"
+            href="produk.php"
             class="mt-8 bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-700 inline-block"
           >
             PESAN SEKARANG

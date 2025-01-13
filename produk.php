@@ -95,6 +95,21 @@
       </div>
     </div>
 
+    <div class="p-6 max-w-lg mx-auto bg-white rounded-lg shadow-md">
+  <h1 class="text-2xl font-bold text-gray-800 mb-4">Cari buku</h1>
+  <form id="searchForm" class="flex items-center space-x-3">
+    <!-- Input untuk mencari barang -->
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Cari barang..."
+      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <!-- Tombol Submit -->
+  </form>
+   <div id="result" class="flex flex-wrap justify-center mt-4"></div>
+</div>
+
     <!-- Main Content -->
     <main class="container mx-auto px-6 py-12">
       <div
@@ -493,8 +508,140 @@
     </div>
 
     <!-- Panggil file JS -->
-     <script>
-      function checkout() {
+    <script>
+  document.getElementById("heart-button")?.addEventListener("click", function () {
+    window.location.href = "collection.php";
+  });
+
+  function toggleDetail(button, descriptionId) {
+    const description = document.getElementById(descriptionId);
+    if (!description) return;
+    if (description.classList.contains("line-clamp-3")) {
+      description.classList.remove("line-clamp-3");
+      description.classList.add("line-clamp-none");
+      button.textContent = "Baca Lebih Sedikit";
+    } else {
+      description.classList.add("line-clamp-3");
+      description.classList.remove("line-clamp-none");
+      button.textContent = "Baca Selengkapnya";
+    }
+  }
+
+  const searchInput = document.getElementById("searchInput");
+  const searchForm = document.getElementById("searchForm");
+  const resultContainer = document.getElementById("result");
+
+  const data = [
+    {
+      nama: "Pempek Kapal Selam",
+      harga: "Rp 15.000",
+      src: "https://img.freepik.com/free-photo/top-view-delicious-breakfast-meal-assortment_23-2148829500.jpg?t=st=1732418783~exp=1732422383~hmac=7a62252a66cb466f04a5d81c34b5c5980c7b138bd1e9f0c1e626d342dc45a15b&w=1060",
+    },
+    {
+      nama: "Pempek Lenjer",
+      harga: "Rp 12.000",
+      src: "https://img.freepik.com/free-photo/deep-fried-fish-ball-dark-surface_1150-43602.jpg",
+    },
+    {
+      nama: "Pempek Adaan",
+      harga: "Rp Rp 10.000",
+      src: "https://img.freepik.com/free-photo/boiled-eggs-stir-fried-with-tamarind-sauce_1150-22260.jpg?t=st=1732418838~exp=1732422438~hmac=d88db83dd28cc184a64fec99d946cbddfacbc2091b79d6117492c27f8b4dba04&w=360",
+    },
+    {
+      nama: "Pempek Kulit",
+      harga: "Rp 13.000",
+      src: "https://img.freepik.com/free-photo/sliced-pirozhki-peppers-board-marble-table_114579-84001.jpg?t=st=1732418933~exp=1732422533~hmac=8323550e4266f8c3368f90cc95925852294b17e1375f8bc7c69bd8db7e44950e&w=1060",
+    },
+    {
+      nama: "Pempek Tahu",
+      harga: "Rp 11.000",
+      src: "https://img.freepik.com/free-photo/flat-lay-delicious-brazilian-food-arrangement-with-copy-space_23-2148739199.jpg?t=st=1732418868~exp=1732422468~hmac=b4013fd72d79d8e11c4111d793247060c5fcdc51b1329b29d232d3acebef0a8c&w=1380",
+    },
+    {
+      nama: "Paket Pempek Ikan",
+      harga: "Rp 14.000",
+      src: "https://i.pinimg.com/736x/d3/38/97/d33897a61ff84685ae6885e67054606d.jpg",
+    },
+    {
+      nama: "Paket Pempek Dose",
+      harga: "Rp 13.000",
+      src: "https://img.freepik.com/free-photo/deep-fried-fhicken-roll-white-wooden-surface_1150-43596.jpg?t=st=1732419186~exp=1732422786~hmac=837a0488ecdd6444f690f403e02076000a795810daba865be601e3b708672be1&w=1060",
+    },
+    {
+      nama: "Paket Pempek Pastel",
+      harga: "Rp 12.000",
+      src: "https://img.freepik.com/free-photo/high-angle-plate-with-pakistani-food_23-2148825158.jpg?t=st=1732418623~exp=1732422223~hmac=c469a2922aafdba62ad8e9292cd947c6e8c89d3867c9bf06028a523071cf02ec&w=740",
+    },
+    {
+      nama: "Cuko Authentic",
+      harga: "Rp 16.000",
+      src: "https://img.freepik.com/free-photo/mix-sauces-strawberry-jam-condensed-milk-honey-top-view_141793-4494.jpg?t=st=1732419273~exp=1732422873~hmac=b5f53f9c499342cca310c97752f20a54c159c510c4c7e2a149d63ac5a178dbe1&w=1060",
+    },
+    {
+      nama: "Cuko Sambal Merah",
+      harga: "Rp 15.000",
+      src: "https://img.freepik.com/free-photo/top-view-sweet-delicious-halva-yummy-eastern-sweet-dessert-inside-plate-with-tea_140725-19812.jpg?t=st=1732419356~exp=1732422956~hmac=867aef7b8d233b71d01ce804bf5cb39bb4f00c8cd96317a721fbf4acac86957b&w=1060",
+    },
+    // Tambahkan item lainnya...
+  ];
+
+  function performSearch(query) {
+  if (!query) {
+    resultContainer.innerHTML = "";
+    return;
+  }
+
+  const filteredData = data.filter((item) =>
+    item.nama.toLowerCase().includes(query.toLowerCase())
+  );
+
+  if (filteredData.length === 0) {
+    resultContainer.innerHTML = '<p>Tidak ada barang yang ditemukan.</p>';
+  } else {
+    let resultHTML = "";
+    filteredData.forEach((item) => {
+      resultHTML += `
+        <div class="product-item pempek mx-4">
+          <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+            <div class="relative">
+              <img src="${item.src}" alt="${item.nama}" class="w-full h-48 object-cover object-center"/>
+            </div>
+            <div class="p-4">
+              <h3 class="text-lg font-medium mb-2">${item.nama}</h3>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-orange-500 font-medium">${item.harga}</span>
+                <div class="flex items-center space-x-2">
+                  <button class="quantity-btn minus bg-gray-200 px-2 py-1 rounded" onclick="updateQuantity(this, -1)">-</button>
+                  <input type="number" class="quantity-input w-12 text-center border rounded" value="1" min="1" readonly>
+                  <button class="quantity-btn plus bg-gray-200 px-2 py-1 rounded" onclick="updateQuantity(this, 1)">+</button>
+                </div>
+              </div>
+              <div class="flex items-center justify-between space-x-2">
+                <button onclick="addToCart(this)" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors">
+                  <i class="fas fa-shopping-cart"></i> Tambah ke Keranjang
+                </button>
+                <button onclick="buyNow(this)" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors">
+                  Beli Sekarang
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    resultContainer.innerHTML = resultHTML;
+  }
+}
+  searchInput?.addEventListener("input", () => {
+    performSearch(searchInput.value.trim());
+  });
+
+  searchForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    performSearch(searchInput.value.trim());
+  });
+
+  function checkout() {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
       if (cart.length === 0) {
        alert("Keranjang belanja Anda masih kosong.");
@@ -506,7 +653,7 @@
   // Redirect ke halaman checkout
   window.location.href = "checkout.php";
 }
-    </script>
+</script>
     <script src="js/cart.js"></script>
     <script src="js/quantity.js"></script>
     <script src="js/navigation.js"></script>
